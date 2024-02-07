@@ -1,5 +1,6 @@
 const { Pool } = require('pg');
 const Application = require("./model/application");
+const Account = require("./model/account");
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -17,8 +18,10 @@ app.get('/allApplications', async (req, res) => {
   res.json(data)
 });
 app.get('/Login', async (req, res) => {
-  data = await Application.listAllApplications()
+  data = await Account.login(req)
   // console.log("server step:" + data)
+  console.log("JAG ÄR FAST O SERVERM")
+  console.log("data i server:"+data[0].exists)
   res.json(data)
 });
 app.listen(port, () => {

@@ -6,8 +6,8 @@ const pool = new Pool({
     user: 'postgres',
     host: '127.0.0.1',
     database: 'hiphop2',
-    password: '1234',
-    port: 5432, // Default PostgreSQL port
+    password: 'kali',
+    port: 5433, // Default PostgreSQL port
   });
   
 
@@ -26,17 +26,18 @@ const pool = new Pool({
     async function login(username, password){
       try{
           const client = await pool.connect();
-      
-          const data = await client.query('SELECT EXISTS(SELECT 1 FROM person WHERE username=username AND password=password);')
-      
+          console.log("Ska göra query nu...");
+          const data = await client.query('SELECT EXISTS(SELECT 1 FROM person WHERE username=\'' + username + '\' AND password=\'' + password + '\');');
           client.release();
+          console.log("Nu är jag klaaaar!");
           return data.rows;
-        }catch {
-          console.error("OPSIE, something went wrong :(")
+        }catch(e) {
+          console.error(e)
         }
   }
 module.exports = {
-    listAllApplications
+    listAllApplications,
+    login
 }
 
 
