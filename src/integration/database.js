@@ -23,6 +23,18 @@ const pool = new Pool({
             console.error("OPSIE, something went wrong :(")
           }
     }
+    async function login(username, password){
+      try{
+          const client = await pool.connect();
+      
+          const data = await client.query('SELECT EXISTS(SELECT 1 FROM users WHERE username=username AND password=password);')
+      
+          client.release();
+          return data.rows;
+        }catch {
+          console.error("OPSIE, something went wrong :(")
+        }
+  }
 module.exports = {
     listAllApplications
 }
