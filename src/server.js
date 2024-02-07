@@ -16,6 +16,11 @@ app.get('/allApplications', async (req, res) => {
   // console.log("server step:" + data)
   res.json(data)
 });
+app.get('/Login', async (req, res) => {
+  data = await Application.listAllApplications()
+  // console.log("server step:" + data)
+  res.json(data)
+});
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
