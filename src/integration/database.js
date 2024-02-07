@@ -27,7 +27,7 @@ const pool = new Pool({
       try{
           const client = await pool.connect();
       
-          const data = await client.query('SELECT EXISTS(SELECT 1 FROM users WHERE username=username AND password=password);')
+          const data = await client.query('SELECT EXISTS(SELECT 1 FROM person WHERE username=username AND password=password);')
       
           client.release();
           return data.rows;
