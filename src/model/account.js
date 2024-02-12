@@ -1,18 +1,24 @@
 const DB = require('../integration/database')
+const jwt = require('jsonwebtoken');
 
 
-function createAccount(){
+async function createAccount(){
     // Implementation for createAccount
 }
 
 async function login(req){
-    const authHeader = req.headers.authorization;
-    if (authHeader && authHeader.startsWith('Basic ')) {
-        const credentials = authHeader.split(' ')[1];
-        const decodedCredentials = Buffer.from(credentials, 'base64').toString('ascii');
-        const [username, password] = decodedCredentials.split(':');
-        return DB.login(username, password);
-    }
+    const { username, password } = req.body;
+    try{
+       const user =  await DB.login(username, password);
+       if(user.exists){
+        const token = jwt.sign({username}, process.env.JWT_SECRET, { expiresIn: '300' });
+        return { token, user };
+       }
+       return user
+    }catch(err){
+        console.log(err)
+    }  
+    
 }
 module.exports = {
     createAccount,
