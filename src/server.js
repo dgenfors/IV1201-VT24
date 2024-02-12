@@ -20,7 +20,6 @@ app.use((req, res, next) => {
 });
 function authenticateJWT(req, res, next) {
   const jwtToken = req.cookies.jwt;
-  console.log(jwtToken)
   if(!jwtToken){
       return res.status(401).json({ error: 'Unauthorized' });
   }
@@ -29,6 +28,7 @@ function authenticateJWT(req, res, next) {
     req.user = jwtPayload; // Attach user information to the request object
     next();
   } catch (error) {
+    console.log(error)
     return res.status(403).json({ error: 'Invalid token' });
   }
 }
