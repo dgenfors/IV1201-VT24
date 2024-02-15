@@ -40,10 +40,10 @@ async function login(req) {
     try {
         const user = await DB.login(username, password);
         if (user.exists) {
-            const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '300' });
+            const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '30m' });
             return { token, user };
         }
-        return user;
+        return {user};
     } catch (error) {
         console.error(error);
     }

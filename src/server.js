@@ -4,7 +4,6 @@ const Account = require("./model/account");
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-
 const app = express();
 require('dotenv').config();
 const port = 3001; // process.env.SERVER_PORT; //Add this
@@ -12,11 +11,11 @@ const port = 3001; // process.env.SERVER_PORT; //Add this
 /**
  * Enable CORS and set up middleware for parsing JSON and cookies.
  */
-app.use(cors()); // Enable CORS for all routes
+//app.use(cors()); // Enable CORS for all routes
 app.use(express.json());
 app.use(cookieParser());
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000/'); // Change '*' to your frontend URL in production
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000'); // Change '*' to your frontend URL in production
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   res.setHeader('Access-Control-Allow-Credentials', 'true'); // Allow credentials (cookies)
@@ -61,9 +60,11 @@ app.get('/allApplications', authenticateJWT, async (req, res) => {
  * Route for logging in.
  */
 app.post('/login', async (req, res) => {
+  console.log("login testarawra")
   try {
     const data = await Account.login(req);
     res.cookie('jwt', data.token, { httpOnly: true, domain: 'localhost' }); // Tell the client to send a cookie with JWT token afterwards
+    console.log(JSON.stringify(data.user))
     res.json(data.user);
   } catch (error) {
     console.error(error);
