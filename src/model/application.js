@@ -1,20 +1,46 @@
-const DB = require('../integration/database')
+const DB = require('../integration/database');
 
-    async function listAllApplications(request) {
-        return DB.listAllApplications()
-    }
+/**
+ * Retrieves a list of all applications from the database.
+ * @async
+ * @function listAllApplications
+ * @param {int} max - The maximum applications to list.
+ * @returns {Promise<Array<ListAppDTO>>} A Promise that resolves with an array of application objects.
+ */
+async function listAllApplications(max) {
+    return DB.listAllApplications();
+}
 
-    function submitApplication() {
-        // Implementation for submitApplication
-    }
+/**
+ * Submits a new application.
+ * @function submitApplication
+ * @param {ApplicationDTO} app - A DTO with all the information that is in the application.
+ * @returns {Boolean} Boolean confirming the sucess.
+ */
+function submitApplication(app) {
+    // Implementation for submitApplication
+}
 
-    function fetchApplicationData() {
-        // Implementation for fetchApplicationData
-    }
+/**
+ * Fetches application data.
+ * @function fetchApplicationData
+ * @param {String} user - Username of the user linked to the specific application.
+ * @returns {ApplicationDTO} DTO containing all the information that is in the application.
+ */
+function fetchApplicationData(user) {
+    // Implementation for fetchApplicationData
+}
 
-    function processApplication() {
-        // Implementation for processApplication
-    }
+/**
+ * Processes an application.
+ * @function processApplication
+ * @param {String} user - Username of the user linked to the specific application.
+ * @param {String} status - The new status of the application
+ * @returns {Boolean} Boolean confirming the sucess.
+ */
+function processApplication(user, status) {
+    // submitApplication
+}
 
 module.exports = {
     listAllApplications,

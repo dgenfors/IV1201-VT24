@@ -1,0 +1,5 @@
+const checkIfCredentialsMatch = function(username, password){return 'SELECT EXISTS(SELECT 1 FROM person WHERE username=\'' + username + '\' AND password=\'' + password + '\');'}
+const checkIfAnyFieldNotUsed = function(username, email, pnr){ return 'SELECT EXISTS (SELECT 1 FROM person WHERE username = \'' + username + '\') AS username_exists, EXISTS (SELECT 1 FROM person WHERE email = \''+ email +'\') AS email_exists, EXISTS (SELECT 1 FROM person WHERE pnr = \''+ pnr +'\') AS personal_number_exists,NOT EXISTS (SELECT 1 FROM person WHERE username =\'' + username + '\' OR email = \''+ email +'\' OR pnr = \''+ pnr +'\') AS success;'}
+const createNewAccount = function(UserDTO){return 'INSERT INTO public.person(name, surname, pnr, email, password, role_id, username)VALUES (\''+UserDTO.name+'\', \''+UserDTO.surname+'\', \''+UserDTO.pnr+'\', \''+UserDTO.email+'\', \''+ UserDTO.password+'\', \'2\' , \'' + UserDTO.username+ '\');'}
+
+module.exports = {checkIfCredentialsMatch, checkIfAnyFieldNotUsed}
