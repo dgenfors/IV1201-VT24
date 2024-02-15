@@ -20,9 +20,8 @@ app.get('/allApplications', async (req, res) => {
 app.get('/Login', async (req, res) => {
   data = await Account.login(req)
   // console.log("server step:" + data)
-  console.log("JAG ÄR FAST O SERVERM")
   console.log("data i server:"+data[0].exists)
-  res.json(data)
+  res.json(data[0].exists)
 });
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);

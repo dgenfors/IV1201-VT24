@@ -26,10 +26,8 @@ const pool = new Pool({
     async function login(username, password){
       try{
           const client = await pool.connect();
-          console.log("Ska göra query nu...");
           const data = await client.query('SELECT EXISTS(SELECT 1 FROM person WHERE username=\'' + username + '\' AND password=\'' + password + '\');');
           client.release();
-          console.log("Nu är jag klaaaar!");
           return data.rows;
         }catch(e) {
           console.error(e)
