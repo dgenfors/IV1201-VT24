@@ -12,8 +12,12 @@ async function createAccount(user) {
     try{
         const data = await DB.checkIfNotUserExists(user.body.user)
         console.log("does account exist: " + data.success)
-        if (data.success)
-            DB.createAccount(user.body.user)
+        if (data.success){
+            const accCreated = DB.createAccount(user.body.user)
+            if(accCreated && data.success){
+                return {success: false}
+            }
+        }
         return data;
     }catch(e){
         console.error(e)
@@ -36,7 +40,7 @@ async function login(req) {
     try {
         const user = await DB.login(username, password);
         if (user.exists) {
-            const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '1d' });
+            const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '300' });
             return { token, user };
         }
         return user;

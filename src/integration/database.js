@@ -73,12 +73,14 @@ async function checkIfNotUserExists(user) {
     console.log("Användare existerar redan")
   }
 }
+
 async function createAccount(userDTO) {
   try {
     const client = await pool.connect();
     const data = await client.query(sql.createNewAccount(userDTO))
     return true;
-  } catch (error) {
+  } catch (e) {
+    console.error(e);
     console.log("Faila skapa användare")
   }
 }
