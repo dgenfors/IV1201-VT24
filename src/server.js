@@ -11,7 +11,6 @@ const port = 3001; // process.env.SERVER_PORT; //Add this
 /**
  * Enable CORS and set up middleware for parsing JSON and cookies.
  */
-//app.use(cors()); // Enable CORS for all routes
 app.use(express.json());
 app.use(cookieParser());
 app.use((req, res, next) => {
