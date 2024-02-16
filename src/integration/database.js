@@ -47,7 +47,6 @@ async function login(username, password) {
     const client = await pool.connect();
     const data = await client.query(sql.checkIfCredentialsMatch(username, password));
     client.release();
-    console.log("Nu är jag klaaaar!" + data.rows);
     return data.rows[0];
   } catch (error) {
     console.error(error);

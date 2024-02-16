@@ -59,11 +59,9 @@ app.get('/allApplications', authenticateJWT, async (req, res) => {
  * Route for logging in.
  */
 app.post('/login', async (req, res) => {
-  console.log("login testarawra")
   try {
     const data = await Account.login(req);
     res.cookie('jwt', data.token, { httpOnly: true, domain: 'localhost' }); // Tell the client to send a cookie with JWT token afterwards
-    console.log(JSON.stringify(data.user))
     res.json(data.user);
   } catch (error) {
     console.error(error);

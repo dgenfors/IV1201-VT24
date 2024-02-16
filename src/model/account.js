@@ -11,16 +11,16 @@ const jwt = require('jsonwebtoken');
 async function createAccount(user) {
     try{
         const data = await DB.checkIfNotUserExists(user.body.user)
-        console.log("does account exist: " + data.success)
         if (data.success){
-            const accCreated = DB.createAccount(user.body.user)
+            const accCreated = await DB.createAccount(user.body.user)
             if(accCreated && data.success){
-                return {success: false}
+                return {success: true}
             }
         }
         return data;
     }catch(e){
         console.error(e)
+        return {error: "opsie"}
     }
    
     // Implementation for createAccount
