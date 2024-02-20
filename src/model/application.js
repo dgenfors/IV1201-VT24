@@ -17,8 +17,15 @@ async function listAllApplications(max) {
  * @param {ApplicationDTO} app - A DTO with all the information that is in the application.
  * @returns {Boolean} Boolean confirming the sucess.
  */
-function submitApplication(app) {
+async function submitApplication(app) {
     // Implementation for submitApplication
+    try{
+        const db = await DB.createNewApplication(app.body.app , app.user.username)
+        console.log("db sumbit" +db)
+        return db
+    }catch(e){
+        console.log(e)
+    }
 }
 
 /**

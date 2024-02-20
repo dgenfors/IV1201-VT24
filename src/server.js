@@ -82,6 +82,17 @@ app.post('/createAccount', async (req, res) => {
   }
 });
 
+app.post('/createNewApplication',authenticateJWT, async (req, res) => {
+  try {
+    const data = await Application.submitApplication(req)
+    console.log("server"+data)
+    res.json(data)
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 /**
  * Start the server and listen for incoming connections.
  */

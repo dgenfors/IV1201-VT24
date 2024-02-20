@@ -10,8 +10,8 @@ const pool = new Pool({
   user: 'postgres',
   host: '127.0.0.1',
   database: 'hiphop2',
-  password: '1234',
-  port: 5432, // Default PostgreSQL port
+  password: 'kali',
+  port: 5433, // Default PostgreSQL port
 });
 
 /**
@@ -49,6 +49,7 @@ async function login(username, password) {
     client.release();
     return data.rows[0];
   } catch (error) {
+    console.log("Couldn't login!")
     console.error(error);
     throw error;
   }
@@ -66,28 +67,42 @@ async function login(username, password) {
 async function checkIfNotUserExists(user) {
   try {  
     const client = await pool.connect();
-    const data = await client.query(sql.checkIfAnyFieldNotUsed(user.username, user.email, user.pnumbr))
+    const data = await client.query(sql.checkIfAnyFieldNotUsed(user.username, user.email, user.pnumbr));
     return data.rows[0];
   } catch (error) {
-    console.log("Användare existerar redan")
+    console.log("Couldn't check if user doesn't exists")
   }
 }
 
 async function createAccount(userDTO) {
   try {
     const client = await pool.connect();
-    const data = await client.query(sql.createNewAccount(userDTO))
+    const data = await client.query(sql.createNewAccount(userDTO));
     return true;
   } catch (e) {
     console.error(e);
-    console.log("Faila skapa användare")
+    console.log("Couldn't create new account")
   }
 }
+
+
+async function createNewApplication(app, username) {
+  try {
+    const client = await pool.connect();
+    const data = await client.query(sql.createNewApplication(app, username))
+    return true
+  } catch (e) {
+    //console.error(e);
+    console.log("Couldn't create a new application!\n\n" + e)
+  }
+}
+
 module.exports = {
   listAllApplications,
   login,
   checkIfNotUserExists,
-  createAccount
+  createAccount,
+  createNewApplication
 };
 
 
