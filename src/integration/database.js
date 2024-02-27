@@ -86,10 +86,10 @@ async function createAccount(userDTO) {
 }
 
 
-async function createNewApplication(app, username) {
+async function createNewApplication(application, username) {
   try {
     const client = await pool.connect();
-    const data = await client.query(sql.createNewApplication(app, username))
+    const data = await client.query(sql.createNewApplication(application, username))
     return true
   } catch (e) {
     //console.error(e);

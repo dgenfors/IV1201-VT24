@@ -18,10 +18,10 @@ async function listAllApplications(max) {
  * @returns {Boolean} Boolean confirming the sucess.
  */
 async function submitApplication(app) {
-    // Implementation for submitApplication
+    console.log(app.body)
     try{
-        const db = await DB.createNewApplication(app.body.app , app.user.username)
-        console.log("db sumbit" +db)
+        const db = await DB.createNewApplication(app.body.application , app.user.username)
+        console.log("db submit" + db)
         return db
     }catch(e){
         console.log(e)
@@ -35,7 +35,7 @@ async function submitApplication(app) {
  * @returns {ApplicationDTO} DTO containing all the information that is in the application.
  */
 function fetchApplicationData(user) {
-    // Implementation for fetchApplicationData
+
 }
 
 /**
@@ -46,7 +46,7 @@ function fetchApplicationData(user) {
  * @returns {Boolean} Boolean confirming the sucess.
  */
 function processApplication(user, status) {
-    // submitApplication
+    
 }
 
 module.exports = {

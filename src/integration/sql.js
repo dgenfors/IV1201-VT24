@@ -4,16 +4,16 @@ const createNewAccount = function(userDTO){return 'INSERT INTO public.person(nam
 const createNewApplication = function(applicationDTO, username){
     for (let i = 0; i < applicationDTO.competence.length; i++) {
         if(i == 0){
-            compet = '(\'' + applicationDTO.competence[0].xp + '\')'
-            comp_profile = '((SELECT person_id FROM person WHERE username = \'' + username + '\'), (SELECT competence_id FROM competence WHERE name = \'' + applicationDTO.competence[0].xp + '\'), '+ applicationDTO.competence[0].year + ')'
+            compet = '(\'' + applicationDTO.competence[0].exp + '\')'
+            comp_profile = '((SELECT person_id FROM person WHERE username = \'' + username + '\'), (SELECT competence_id FROM competence WHERE name = \'' + applicationDTO.competence[0].exp + '\'), '+ applicationDTO.competence[0].year + ')'
             availa = '((SELECT person_id FROM person WHERE username = \'' + username + '\'), \'' + applicationDTO.availability[0].startDate + '\', \'' + applicationDTO.availability[0].endDate + '\')'
         }
         else{
             compet += ','
             comp_profile += ','
             availa += ','
-            compet += '(\'' + applicationDTO.competence[i].xp + '\')'
-            comp_profile += '((SELECT person_id FROM person WHERE username = \'' + username + '\'), (SELECT competence_id FROM competence WHERE name = \'' + applicationDTO.competence[i].xp + '\'), '+ applicationDTO.competence[i].year + ')'
+            compet += '(\'' + applicationDTO.competence[i].exp + '\')'
+            comp_profile += '((SELECT person_id FROM person WHERE username = \'' + username + '\'), (SELECT competence_id FROM competence WHERE name = \'' + applicationDTO.competence[i].exp + '\'), '+ applicationDTO.competence[i].year + ')'
         }
     }
     for (let i = 1; i < applicationDTO.availability.length; i++) {
