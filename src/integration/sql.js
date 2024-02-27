@@ -24,7 +24,7 @@ const createNewApplication = function(applicationDTO, username){
     return 'INSERT INTO competence (name) VALUES' + compet + ' ON CONFLICT (name) DO NOTHING; INSERT INTO competence_profile (person_id, competence_id, years_of_experience) VALUES' + comp_profile + 'INSERT INTO availability (person_id, from_date, to_date) VALUES' + availa
 }
 const listAllApplications= function(){
-    return 'select name,surname,application_status from person where role_id =2'
+    return 'SELECT surname, name, application_status FROM person WHERE role_id =2 ORDER BY surname LIMIT 20'
 }
 
 module.exports = {checkIfCredentialsMatch, checkIfAnyFieldNotUsed, createNewAccount, createNewApplication, listAllApplications}
