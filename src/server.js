@@ -21,6 +21,7 @@ app.use((req, res, next) => {
   next();
 });
 
+
 /**
  * Middleware for authenticating JWT tokens.
  * @param {Object} req - The request object.
@@ -41,20 +42,6 @@ function authenticateJWT(req, res, next) {
     return res.status(403).json({ error: 'Invalid token' });
   }
 }
-
-/**
- * Route for retrieving all applications.
- */
-app.get('/allApplications', authenticateJWT, async (req, res) => {
-  try {
-    const data = await Application.listAllApplications();
-    res.json(data);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
 /**
  * Route for logging in.
  */
@@ -82,7 +69,25 @@ app.post('/createAccount', async (req, res) => {
   }
 });
 
-app.post('/createNewApplication',authenticateJWT, async (req, res) => {
+/**
+ * Route for retrieving all applications.
+ */
+app.get('/allApplications', async (req, res) => {
+  try {
+    const data = await Application.listAllApplications(req);
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+/**
+ * Everything below this will go through authentication
+ */
+app.use(authenticateJWT)
+
+app.post('/createNewApplication', async (req, res) => {
   try {
     const data = await Application.submitApplication(req)
     console.log("server"+data)
@@ -92,6 +97,7 @@ app.post('/createNewApplication',authenticateJWT, async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 
 /**
  * Start the server and listen for incoming connections.

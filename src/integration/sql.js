@@ -23,6 +23,8 @@ const createNewApplication = function(applicationDTO, username){
     availa += ';'
     return 'INSERT INTO competence (name) VALUES' + compet + ' ON CONFLICT (name) DO NOTHING; INSERT INTO competence_profile (person_id, competence_id, years_of_experience) VALUES' + comp_profile + 'INSERT INTO availability (person_id, from_date, to_date) VALUES' + availa
 }
+const listAllApplications= function(){
+    return 'select name,surname,application_status from person where role_id =2'
+}
 
-
-module.exports = {checkIfCredentialsMatch, checkIfAnyFieldNotUsed, createNewAccount, createNewApplication}
+module.exports = {checkIfCredentialsMatch, checkIfAnyFieldNotUsed, createNewAccount, createNewApplication, listAllApplications}

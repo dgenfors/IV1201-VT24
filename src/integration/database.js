@@ -10,8 +10,8 @@ const pool = new Pool({
   user: 'postgres',
   host: '127.0.0.1',
   database: 'hiphop2',
-  password: 'kali',
-  port: 5433, // Default PostgreSQL port
+  password: '1234',
+  port: 5432, // Default PostgreSQL port
 });
 
 /**
@@ -24,7 +24,7 @@ const pool = new Pool({
 async function listAllApplications() {
   try {
     const client = await pool.connect();
-    const data = await client.query('SELECT name FROM person');
+    const data = await client.query(sql.listAllApplications());
     client.release();
     return data.rows;
   } catch (error) {
