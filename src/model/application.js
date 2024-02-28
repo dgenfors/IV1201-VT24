@@ -18,13 +18,11 @@ async function listAllApplications(max) {
  * @returns {Boolean} Boolean confirming the sucess.
  */
 async function submitApplication(app) {
-    console.log(app.body)
     try{
         const db = await DB.createNewApplication(app.body.application , app.user.username)
-        console.log("db submit" + db)
         return db
     }catch(e){
-        console.log(e)
+        throw e;
     }
 }
 

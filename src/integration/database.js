@@ -1,6 +1,7 @@
 const Application = require('../model/application');
 const sql = require('./sql');
 const { Pool } = require('pg');
+const logs = require('./logsHandler')
 
 /**
  * Represents a pool of connections to a PostgreSQL database.
@@ -27,9 +28,9 @@ async function listAllApplications() {
     const data = await client.query(sql.listAllApplications());
     client.release();
     return data.rows;
-  } catch (error) {
-    console.error("OPSIE, something went wrong :(", error);
-    throw error;
+  } catch (e) {
+    logs.appendErrorLineToFile(e);
+    throw e;
   }
 }
 
@@ -46,12 +47,12 @@ async function login(username, password) {
   try {
     const client = await pool.connect();
     const data = await client.query(sql.checkIfCredentialsMatch(username, password));
+    const roleResponse = await client.query(sql.checkRoleID(username))
     client.release();
-    return data.rows[0];
-  } catch (error) {
-    console.log("Couldn't login!")
-    console.error(error);
-    throw error;
+    return {exists: data.rows[0].exists, role: roleResponse.rows[0].role_id};
+  } catch (e) {
+    logs.appendErrorLineToFile(e);
+    throw e;
   }
 }
 
@@ -65,12 +66,15 @@ async function login(username, password) {
  * @throws {Error} Throws an error if there is an issue executing the query.
  */
 async function checkIfNotUserExists(user) {
-  try {  
+  try {
     const client = await pool.connect();
     const data = await client.query(sql.checkIfAnyFieldNotUsed(user.username, user.email, user.pnumbr));
+    client.release();
     return data.rows[0];
-  } catch (error) {
+  } catch (e) {
     console.log("Couldn't check if user doesn't exists")
+    logs.appendErrorLineToFile(e);
+    throw e;
   }
 }
 
@@ -78,10 +82,14 @@ async function createAccount(userDTO) {
   try {
     const client = await pool.connect();
     const data = await client.query(sql.createNewAccount(userDTO));
+    client.release();
+    logs.appendEventLineToFile("Created account: " + userDTO.username);
     return true;
   } catch (e) {
+    logs.appendErrorLineToFile(e);
     console.error(e);
     console.log("Couldn't create new account")
+    throw e;
   }
 }
 
@@ -90,10 +98,14 @@ async function createNewApplication(application, username) {
   try {
     const client = await pool.connect();
     const data = await client.query(sql.createNewApplication(application, username))
+    client.release();
+    logs.appendEventLineToFile("Created new application for user: " + username);
     return true
   } catch (e) {
     //console.error(e);
+    logs.appendErrorLineToFile(e);
     console.log("Couldn't create a new application!\n\n" + e)
+    throw e;
   }
 }
 

@@ -16,11 +16,17 @@ app.use(cookieParser());
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000'); // Change '*' to your frontend URL in production
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, application/json, Authorization');
   res.setHeader('Access-Control-Allow-Credentials', 'true'); // Allow credentials (cookies)
   next();
 });
-
+app.options('*', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000'); // Change '*' to your frontend URL in production
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true'); // Allow credentials (cookies)
+  res.sendStatus(200);
+});
 
 /**
  * Middleware for authenticating JWT tokens.
@@ -48,8 +54,10 @@ function authenticateJWT(req, res, next) {
 app.post('/login', async (req, res) => {
   try {
     const data = await Account.login(req);
-    res.cookie('jwt', data.token, { httpOnly: true, domain: 'localhost' }); // Tell the client to send a cookie with JWT token afterwards
-    res.json(data.user);
+    if(!data)
+      res.json(false);
+    res.cookie('jwt', data.token, { httpOnly: true, domain: 'localhost' });
+    res.json(true);
   } catch (error) {
     console.error(error);
     res.status(401).json({ error: 'Unauthorized' });
@@ -60,6 +68,7 @@ app.post('/login', async (req, res) => {
  * Route for creating a new account.
  */
 app.post('/createAccount', async (req, res) => {
+  
   try {
     const data = await Account.createAccount(req);
     res.json(data);
@@ -68,11 +77,18 @@ app.post('/createAccount', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+/**
+ * Everything below this will go through authentication
+ */
+app.use(authenticateJWT)
 
 /**
  * Route for retrieving all applications.
  */
 app.get('/allApplications', async (req, res) => {
+  if(req.user.role !== 1){
+    res.status(401).json({ error: 'Unauthorized' });
+  }
   try {
     const data = await Application.listAllApplications(req);
     res.json(data);
@@ -83,14 +99,15 @@ app.get('/allApplications', async (req, res) => {
 });
 
 /**
- * Everything below this will go through authentication
+ * Route to create a new applications.
  */
-app.use(authenticateJWT)
-
 app.post('/createNewApplication', async (req, res) => {
+  if(req.user.role !== 2){
+    res.status(401).json({ error: 'Unauthorized' });
+  }
   try {
     const data = await Application.submitApplication(req)
-    console.log("server"+data)
+    console.log("server" + data)
     res.json(data)
   } catch (error) {
     console.error(error);

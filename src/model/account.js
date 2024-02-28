@@ -20,7 +20,7 @@ async function createAccount(user) {
         return data;
     }catch(e){
         console.error(e)
-        return {error: "opsie"}
+        throw e
     }
    
     // Implementation for createAccount
@@ -40,12 +40,12 @@ async function login(req) {
     try {
         const user = await DB.login(username, password);
         if (user.exists) {
-            const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '30m' });
+            const token = jwt.sign({ username, role: user.role }, process.env.JWT_SECRET, { expiresIn: '30m' });
             return { token, user };
         }
-        return {user};
-    } catch (error) {
-        console.error(error);
+        return false;
+    } catch (e) {
+        throw e;
     }
 }
 

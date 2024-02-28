@@ -1,4 +1,5 @@
 const checkIfCredentialsMatch = function(username, password){return 'SELECT EXISTS(SELECT 1 FROM person WHERE username=\'' + username + '\' AND password=\'' + password + '\');'}
+const checkRoleID = function(username){return 'SELECT role_id FROM person WHERE username=\'' + username + '\';'}
 const checkIfAnyFieldNotUsed = function(username, email, pnr){return 'SELECT EXISTS (SELECT 1 FROM person WHERE username = \'' + username + '\') AS username_exists, EXISTS (SELECT 1 FROM person WHERE email = \''+ email +'\') AS email_exists, EXISTS (SELECT 1 FROM person WHERE pnr = \''+ pnr +'\') AS personal_number_exists,NOT EXISTS (SELECT 1 FROM person WHERE username =\'' + username + '\' OR email = \''+ email +'\' OR pnr = \''+ pnr +'\') AS success;'}
 const createNewAccount = function(userDTO){return 'INSERT INTO public.person(name, surname, pnr, email, password, role_id, username)VALUES (\''+userDTO.firstname+'\', \''+userDTO.lastname+'\', \''+userDTO.pnumbr+'\', \''+userDTO.email+'\', \''+ userDTO.password+'\', \'2\' , \'' + userDTO.username+ '\');'}
 const createNewApplication = function(applicationDTO, username){
@@ -27,4 +28,4 @@ const listAllApplications= function(){
     return 'SELECT surname, name, application_status FROM person WHERE role_id =2 ORDER BY surname LIMIT 20'
 }
 
-module.exports = {checkIfCredentialsMatch, checkIfAnyFieldNotUsed, createNewAccount, createNewApplication, listAllApplications}
+module.exports = {checkIfCredentialsMatch, checkIfAnyFieldNotUsed, createNewAccount, createNewApplication, listAllApplications, checkRoleID}
