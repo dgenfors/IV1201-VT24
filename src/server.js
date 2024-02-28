@@ -38,14 +38,15 @@ function authenticateJWT(req, res, next) {
   const jwtToken = req.cookies.jwt;
   if (!jwtToken) {
     return res.status(401).json({ error: 'Unauthorized' });
-  }
-  try {
-    const jwtPayload = jwt.verify(jwtToken, process.env.JWT_SECRET);
-    req.user = jwtPayload; // Attach user information to the request object
-    next();
-  } catch (error) {
-    console.error(error);
-    return res.status(403).json({ error: 'Invalid token' });
+  }else {
+    try {
+      const jwtPayload = jwt.verify(jwtToken, process.env.JWT_SECRET);
+      req.user = jwtPayload; // Attach user information to the request object
+      next();
+    } catch (error) {
+      console.error(error);
+      return res.status(403).json({ error: 'Invalid token' });
+    }
   }
 }
 /**
@@ -54,13 +55,15 @@ function authenticateJWT(req, res, next) {
 app.post('/login', async (req, res) => {
   try {
     const data = await Account.login(req);
-    if(!data)
+    if(!data){
       res.json(false);
-    res.cookie('jwt', data.token, { httpOnly: true, domain: 'localhost' });
-    res.json(true);
+    }else{
+      res.cookie('jwt', data.token, { httpOnly: true, domain: 'localhost' });
+      res.json(true);
+    }
   } catch (error) {
     console.error(error);
-    res.status(401).json({ error: 'Unauthorized' });
+    res.status(401).json({ error: 'Could not login' });
   }
 });
 
@@ -68,7 +71,6 @@ app.post('/login', async (req, res) => {
  * Route for creating a new account.
  */
 app.post('/createAccount', async (req, res) => {
-  
   try {
     const data = await Account.createAccount(req);
     res.json(data);
@@ -88,14 +90,16 @@ app.use(authenticateJWT)
 app.get('/allApplications', async (req, res) => {
   if(req.user.role !== 1){
     res.status(401).json({ error: 'Unauthorized' });
+  }else{
+    try {
+      const data = await Application.listAllApplications(req);
+      res.json(data);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
   }
-  try {
-    const data = await Application.listAllApplications(req);
-    res.json(data);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
+ 
 });
 
 /**
@@ -104,15 +108,17 @@ app.get('/allApplications', async (req, res) => {
 app.post('/createNewApplication', async (req, res) => {
   if(req.user.role !== 2){
     res.status(401).json({ error: 'Unauthorized' });
+  }else{
+    try {
+      const data = await Application.submitApplication(req)
+      console.log("server" + data)
+      res.json(data)
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
   }
-  try {
-    const data = await Application.submitApplication(req)
-    console.log("server" + data)
-    res.json(data)
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
+  
 });
 
 

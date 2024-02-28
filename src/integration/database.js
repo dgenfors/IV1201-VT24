@@ -47,6 +47,10 @@ async function login(username, password) {
   try {
     const client = await pool.connect();
     const data = await client.query(sql.checkIfCredentialsMatch(username, password));
+    if(!data.rows[0].exists){
+      client.release();
+      return {exists: data.rows[0].exists, role: null}
+    }
     const roleResponse = await client.query(sql.checkRoleID(username))
     client.release();
     return {exists: data.rows[0].exists, role: roleResponse.rows[0].role_id};
