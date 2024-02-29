@@ -60,10 +60,10 @@ app.post('/login', async (req, res) => {
   try {
     const data = await Account.login(req);
     if(!data){
-      res.json(false);
+      res.json({state: false});
     }else{
       res.cookie('jwt', data.token, { httpOnly: true, domain: 'localhost' });
-      res.json(true);
+      res.json({state : true, role_id: data.user.role});
     }
   } catch (error) {
     console.error(error);

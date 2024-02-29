@@ -93,7 +93,13 @@ async function checkIfNotUserExists(user) {
     throw e;
   }
 }
-
+/**
+ * Asynchronously creates a new account.
+ * 
+ * @param {userDTO} userDTO - The user data transfer object containing information for creating the account.
+ * @returns {Promise<boolean>} - A Promise that resolves to true if the account is created successfully.
+ * @throws {Error} - If an error occurs during the account creation process.
+ */
 async function createAccount(userDTO) {
   const client = await pool.connect();
   try {
@@ -112,7 +118,14 @@ async function createAccount(userDTO) {
   }
 }
 
-
+/**
+ * Asynchronously creates a new application for a user.
+ * 
+ * @param {applicationDTO} application - The application object containing information for the new application.
+ * @param {string} username - The username of the user for whom the application is being created.
+ * @returns {Promise<boolean>} - A Promise that resolves to true if the application is created successfully.
+ * @throws {Error} - If an error occurs during the application creation process.
+ */
 async function createNewApplication(application, username) {
     const client = await pool.connect();
   try {
