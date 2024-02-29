@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const app = express();
 require('dotenv').config();
 const port = 3001; // process.env.SERVER_PORT; //Add this
+const logsHandler = require('./integration/logsHandler')
 
 /**
  * Enable CORS and set up middleware for parsing JSON and cookies.
@@ -27,12 +28,14 @@ app.options('*', (req, res) => {
   res.setHeader('Access-Control-Allow-Credentials', 'true'); // Allow credentials (cookies)
   res.sendStatus(200);
 });
-
+app.use(logsHandler.appendReqLineToFile)
 /**
  * Middleware for authenticating JWT tokens.
+ * @function authenticateJWT
  * @param {Object} req - The request object.
  * @param {Object} res - The response object.
  * @param {Function} next - The next middleware function.
+ * @returns - Error status if user is not unauthorized or invalid jwtToken.
  */
 function authenticateJWT(req, res, next) {
   const jwtToken = req.cookies.jwt;
@@ -49,6 +52,7 @@ function authenticateJWT(req, res, next) {
     }
   }
 }
+
 /**
  * Route for logging in.
  */
@@ -99,9 +103,7 @@ app.get('/allApplications', async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   }
- 
 });
-
 /**
  * Route to create a new applications.
  */
@@ -118,10 +120,7 @@ app.post('/createNewApplication', async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   }
-  
 });
-
-
 /**
  * Start the server and listen for incoming connections.
  */

@@ -4,3 +4,5 @@
 2024-02-28T15:11:31.448Z: TypeError: Cannot read properties of undefined (reading 'role_id')
 2024-02-28T15:14:19.899Z: TypeError: Cannot read properties of undefined (reading 'role_id')
 2024-02-28T15:18:16.491Z: TypeError: Cannot read properties of undefined (reading 'role_id')
+2024-02-29T09:41:35.183Z: ReferenceError: awdomawdomawdomawd is not defined
+2024-02-29T09:44:40.502Z: ReferenceError: awdomawdomawdomawd is not defined

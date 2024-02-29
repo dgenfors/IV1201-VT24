@@ -2,6 +2,9 @@ const Application = require('../model/application');
 const sql = require('./sql');
 const { Pool } = require('pg');
 const logs = require('./logsHandler')
+const beginTransaction = 'BEGIN'
+const endTranscation = 'COMMIT'
+const rollbackTransaction =  'ROLLBACK'
 
 /**
  * Represents a pool of connections to a PostgreSQL database.
@@ -23,13 +26,16 @@ const pool = new Pool({
  * @throws {Error} Throws an error if there is an issue executing the query.
  */
 async function listAllApplications() {
+  const client = await pool.connect();
   try {
-    const client = await pool.connect();
+    await client.query(beginTransaction)
     const data = await client.query(sql.listAllApplications());
+    await client.query(endTranscation)
     client.release();
     return data.rows;
   } catch (e) {
     logs.appendErrorLineToFile(e);
+    await client.query(rollbackTransaction)
     throw e;
   }
 }
@@ -44,9 +50,11 @@ async function listAllApplications() {
  * @throws {Error} Throws an error if there is an issue executing the query.
  */
 async function login(username, password) {
+  const client = await pool.connect();
   try {
-    const client = await pool.connect();
+    await client.query(beginTransaction)
     const data = await client.query(sql.checkIfCredentialsMatch(username, password));
+    await client.query(endTranscation)
     if(!data.rows[0].exists){
       client.release();
       return {exists: data.rows[0].exists, role: null}
@@ -56,6 +64,7 @@ async function login(username, password) {
     return {exists: data.rows[0].exists, role: roleResponse.rows[0].role_id};
   } catch (e) {
     logs.appendErrorLineToFile(e);
+    await client.query(rollbackTransaction)
     throw e;
   }
 }
@@ -70,22 +79,27 @@ async function login(username, password) {
  * @throws {Error} Throws an error if there is an issue executing the query.
  */
 async function checkIfNotUserExists(user) {
+  const client = await pool.connect();
   try {
-    const client = await pool.connect();
+    await client.query(beginTransaction)
     const data = await client.query(sql.checkIfAnyFieldNotUsed(user.username, user.email, user.pnumbr));
+    await client.query(endTranscation)
     client.release();
     return data.rows[0];
   } catch (e) {
     console.log("Couldn't check if user doesn't exists")
     logs.appendErrorLineToFile(e);
+    await client.query(rollbackTransaction)
     throw e;
   }
 }
 
 async function createAccount(userDTO) {
+  const client = await pool.connect();
   try {
-    const client = await pool.connect();
-    const data = await client.query(sql.createNewAccount(userDTO));
+    await client.query(beginTransaction)
+    await client.query(sql.createNewAccount(userDTO));
+    await client.query(endTranscation)
     client.release();
     logs.appendEventLineToFile("Created account: " + userDTO.username);
     return true;
@@ -93,15 +107,18 @@ async function createAccount(userDTO) {
     logs.appendErrorLineToFile(e);
     console.error(e);
     console.log("Couldn't create new account")
+    await client.query(rollbackTransaction)
     throw e;
   }
 }
 
 
 async function createNewApplication(application, username) {
-  try {
     const client = await pool.connect();
+  try {
+    await client.query(beginTransaction)
     const data = await client.query(sql.createNewApplication(application, username))
+    await client.query(endTranscation)
     client.release();
     logs.appendEventLineToFile("Created new application for user: " + username);
     return true
@@ -109,6 +126,7 @@ async function createNewApplication(application, username) {
     //console.error(e);
     logs.appendErrorLineToFile(e);
     console.log("Couldn't create a new application!\n\n" + e)
+    await client.query(rollbackTransaction)
     throw e;
   }
 }
