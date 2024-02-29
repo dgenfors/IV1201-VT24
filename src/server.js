@@ -1,13 +1,14 @@
 const jwt = require('jsonwebtoken');
 const Application = require("./model/application");
-const Account = require("./model/account");
 const express = require('express');
-const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const app = express();
 require('dotenv').config();
 const port = 3001; // process.env.SERVER_PORT; //Add this
 const logsHandler = require('./integration/logsHandler')
+const unauthorizedRoute = require('./api/Unauthorized');
+const recruiterRoute = require('./api/RecruiterApi')
+const userRoute = require('./api/UserApi')
 
 /**
  * Enable CORS and set up middleware for parsing JSON and cookies.
@@ -29,98 +30,11 @@ app.options('*', (req, res) => {
   res.sendStatus(200);
 });
 app.use(logsHandler.appendReqLineToFile)
-/**
- * Middleware for authenticating JWT tokens.
- * @function authenticateJWT
- * @param {Object} req - The request object.
- * @param {Object} res - The response object.
- * @param {Function} next - The next middleware function.
- * @returns - Error status if user is not unauthorized or invalid jwtToken.
- */
-function authenticateJWT(req, res, next) {
-  const jwtToken = req.cookies.jwt;
-  if (!jwtToken) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }else {
-    try {
-      const jwtPayload = jwt.verify(jwtToken, process.env.JWT_SECRET);
-      req.user = jwtPayload; // Attach user information to the request object
-      next();
-    } catch (error) {
-      console.error(error);
-      return res.status(403).json({ error: 'Invalid token' });
-    }
-  }
-}
 
-/**
- * Route for logging in.
- */
-app.post('/login', async (req, res) => {
-  try {
-    const data = await Account.login(req);
-    if(!data){
-      res.json({state: false});
-    }else{
-      res.cookie('jwt', data.token, { httpOnly: true, domain: 'localhost' });
-      res.json({state : true, role_id: data.user.role});
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(401).json({ error: 'Could not login' });
-  }
-});
+app.use('/unauthorized', unauthorizedRoute);
+app.use('/recruiter', recruiterRoute);
+app.use('/user', userRoute);
 
-/**
- * Route for creating a new account.
- */
-app.post('/createAccount', async (req, res) => {
-  try {
-    const data = await Account.createAccount(req);
-    res.json(data);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-/**
- * Everything below this will go through authentication
- */
-app.use(authenticateJWT)
-
-/**
- * Route for retrieving all applications.
- */
-app.get('/allApplications', async (req, res) => {
-  if(req.user.role !== 1){
-    res.status(401).json({ error: 'Unauthorized' });
-  }else{
-    try {
-      const data = await Application.listAllApplications(req);
-      res.json(data);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  }
-});
-/**
- * Route to create a new applications.
- */
-app.post('/createNewApplication', async (req, res) => {
-  if(req.user.role !== 2){
-    res.status(401).json({ error: 'Unauthorized' });
-  }else{
-    try {
-      const data = await Application.submitApplication(req)
-      console.log("server" + data)
-      res.json(data)
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  }
-});
 /**
  * Start the server and listen for incoming connections.
  */
