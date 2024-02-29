@@ -33,3 +33,10 @@ Target: "/allApplications"
 Cookies: {"jwt":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InQiLCJyb2xlIjoyLCJpYXQiOjE3MDkyMDMyNTQsImV4cCI6MTcwOTIwNTA1NH0._0zht4kSBuMj2mJU1L7hGnvWe8F4nBBAGW6vZ8odqBo"}
 
 
+2024-02-29T11:44:04.956Z: 
+Method: "POST"
+Source: "http://localhost:3000"
+Target: "/login"
+Cookies: {"jwt":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InQiLCJyb2xlIjoyLCJpYXQiOjE3MDkyMDY5NzYsImV4cCI6MTcwOTIwODc3Nn0.SrjmknYnuNqUMo-WQD6WFf3dlckMvg3eX9Ww60lctcA"}
+
+
