@@ -9,8 +9,6 @@ router.use(authenticateJWT)
 router.post('/checkIfLogIn', async (req,res) => {
     try {
       role = req.user.role; // Attach user information to the request object
-      console.log("hej")
-      console.log(role)
       res.json(role)
     } catch (error) {
       console.error(error);
