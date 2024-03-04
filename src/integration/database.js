@@ -130,7 +130,12 @@ async function createNewApplication(application, username) {
     const client = await pool.connect();
   try {
     await client.query(beginTransaction)
-    const data = await client.query(sql.createNewApplication(application, username))
+    for (let i = 0; i < application.competence.length; i++) 
+      await client.query(sql.createCompetence(application.competence[i].exp, username));
+    for (let i = 0; i < application.competence.length; i++) 
+      await client.query(sql.createComp_profile(application.competence[i], username));
+    for (let i = 0; i < application.availability.length; i++) 
+      await client.query(sql.createAvailability(application.availability[i], username));
     await client.query(endTranscation)
     client.release();
     logs.appendEventLineToFile("Created new application for user: " + username);
