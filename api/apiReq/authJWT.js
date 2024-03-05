@@ -15,6 +15,7 @@ function authenticateJWT(req, res, next) {
     const jwtToken = authHeader && authHeader.split(' ')[1];
     console.log("token:" +jwtToken)
     if (!jwtToken) {
+      console.log("no token found")
       return res.status(401).json({ error: 'Unauthorized' });
     }else {
       try {
