@@ -4,3 +4,6 @@ node_modules/
 *.log
 # Ignore env
 .env
+.errorLogs.txt
+.eventLogs.txt
+.reqLogs.txt
