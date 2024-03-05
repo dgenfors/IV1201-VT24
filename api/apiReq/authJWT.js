@@ -15,6 +15,7 @@ function authenticateJWT(req, res, next) {
       return res.status(401).json({ error: 'Unauthorized' });
     }else {
       try {
+        console.log(JSON.stringify(jwtToken))
         const jwtPayload = jwt.verify(jwtToken, process.env.JWT_SECRET);
         req.user = jwtPayload; // Attach user information to the request object
         next();
