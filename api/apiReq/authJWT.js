@@ -10,7 +10,10 @@ const jwt = require('jsonwebtoken');
  * @returns - Error status if user is not unauthorized or invalid jwtToken.
  */
 function authenticateJWT(req, res, next) {
-    const jwtToken = req.cookies.jwt;
+    const authHeader = req.headers['authorization'];
+    console.log("headers:" +authHeader)
+    const jwtToken = authHeader && authHeader.split(' ')[1];
+    console.log("token:" +jwtToken)
     if (!jwtToken) {
       return res.status(401).json({ error: 'Unauthorized' });
     }else {
