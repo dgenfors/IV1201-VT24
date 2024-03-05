@@ -11,11 +11,7 @@ const rollbackTransaction =  'ROLLBACK'
  * @type {Pool}
  */
 const pool = new Pool({
-  user: 'postgres',
-  host: '127.0.0.1',
-  database: 'hiphop2',
-  password: '1234',
-  port: 5432, // Default PostgreSQL port
+  connectionString: process.env.POSTGRES_URL ,
 });
 
 /**
