@@ -4,10 +4,10 @@ const app = express();
 require('dotenv').config();
 const port = 3001; // process.env.SERVER_PORT; //Add this
 const logsHandler = require('./integration/logsHandler')
-const unauthorizedRoute = require('./api/Unauthorized');
-const recruiterRoute = require('./api/RecruiterApi')
-const userRoute = require('./api/UserApi')
-const userValidate = require('./api/Validate')
+const unauthorizedRoute = require('./apiReq/Unauthorized');
+const recruiterRoute = require('./apiReq/RecruiterApi')
+const userRoute = require('./apiReq/UserApi')
+const userValidate = require('./apiReq/Validate')
 
 /**
  * Enable CORS and set up middleware for parsing JSON and cookies.
