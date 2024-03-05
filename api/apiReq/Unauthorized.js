@@ -9,6 +9,7 @@ const router = express.Router();
 router.post('/login', async (req, res) => {
   try {
     const data = await Account.login(req);
+    console.log("unauth login:"+ JSON.stringify(data))
     if(!data){
       res.json({state: false});
     }else{

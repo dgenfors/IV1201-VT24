@@ -50,14 +50,17 @@ async function login(username, password) {
   try {
     await client.query(beginTransaction)
     const data = await client.query(sql.checkIfCredentialsMatch(username, password));
-    await client.query(endTranscation)
     if(!data.rows[0].exists){
+      await client.query(endTranscation)
       client.release();
       return {exists: data.rows[0].exists, role: null}
-    }
+    }else{
     const roleResponse = await client.query(sql.checkRoleID(username))
+    await client.query(endTranscation)
     client.release();
     return {exists: data.rows[0].exists, role: roleResponse.rows[0].role_id};
+    }
+    
   } catch (e) {
     logs.appendErrorLineToFile(e);
     await client.query(rollbackTransaction)
