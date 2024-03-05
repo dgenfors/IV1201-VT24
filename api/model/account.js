@@ -36,9 +36,7 @@ async function login(req) {
     try {
         const user = await DB.login(username, password);
         if (user.exists) {
-            console.log(process.env.JWT_SECRET)
             const token = jwt.sign({ username, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
-            console.log(JSON.stringify(token))
             return { token, user };
         }
         return false;
