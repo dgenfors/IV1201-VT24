@@ -19,6 +19,7 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, application/json, Authorization');
   res.setHeader('Access-Control-Allow-Credentials', 'true'); // Allow credentials (cookies)
+  res.setHeader('Access-Control-Expose-Headers', 'Authorization');
   next();
 });
 app.options('*', (req, res) => {
@@ -26,6 +27,7 @@ app.options('*', (req, res) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   res.setHeader('Access-Control-Allow-Credentials', 'true'); // Allow credentials (cookies)
+  res.setHeader('Access-Control-Expose-Headers', 'Authorization');
   res.sendStatus(200);
 });
 app.use(logsHandler.appendReqLineToFile)
