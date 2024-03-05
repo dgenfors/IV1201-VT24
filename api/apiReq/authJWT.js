@@ -11,12 +11,10 @@ const jwt = require('jsonwebtoken');
  */
 function authenticateJWT(req, res, next) {
     const jwtToken = req.cookies.jwt;
-    console.log(JSON.stringify(jwtToken))
     if (!jwtToken) {
       return res.status(401).json({ error: 'Unauthorized' });
     }else {
       try {
-        console.log(JSON.stringify(jwtToken))
         const jwtPayload = jwt.verify(jwtToken, process.env.JWT_SECRET);
         req.user = jwtPayload; // Attach user information to the request object
         next();
