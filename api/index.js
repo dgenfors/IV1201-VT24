@@ -30,7 +30,7 @@ app.options('*', (req, res) => {
 });
 app.use(logsHandler.appendReqLineToFile)
 
-app.get("/", (req, res) => res.send("Express on Vercel"));
+app.get("/getlogs", (req, res) => res.send("Express on Vercel"));
 
 app.use('/unauthorized', unauthorizedRoute);
 app.use('/recruiter', recruiterRoute);
