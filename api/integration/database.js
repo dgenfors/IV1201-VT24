@@ -126,6 +126,7 @@ async function createAccount(userDTO) {
  * @throws {Error} - If an error occurs during the application creation process.
  */
 async function createNewApplication(application, username) {
+  console.log("tog mig hit iaf")
     const client = await pool.connect();
   try {
     await client.query(beginTransaction)
