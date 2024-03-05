@@ -13,7 +13,7 @@ router.post('/login', async (req, res) => {
     if(!data){
       res.json({state: false});
     }else{
-      res.setHeader('Authorization', `Bearer ${data.token}`);
+      res.cookie('jwt', data.token, { httpOnly: true, secure: true, domain: '.vercel.app' });
       res.json({state : true, role_id: data.user.role});
     }
   } catch (error) {
