@@ -1,4 +1,3 @@
-const Application = require('../model/application');
 const sql = require('./sql');
 const { Pool } = require('pg');
 const logs = require('./logsHandler')
