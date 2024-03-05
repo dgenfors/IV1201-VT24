@@ -11,7 +11,11 @@ const jwt = require('jsonwebtoken');
  */
 function authenticateJWT(req, res, next) {
     const authHeader = req.headers['authorization'];
-    console.log("headers:" +authHeader)
+    if (!authHeader) {
+      console.log("no authorization header found");
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    
     const jwtToken = authHeader && authHeader.split(' ')[1];
     console.log("token:" +jwtToken)
     if (!jwtToken) {
