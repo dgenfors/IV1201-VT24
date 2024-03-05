@@ -19,7 +19,6 @@ async function listAllApplications(max) {
  */
 async function submitApplication(app) {
     try{
-        console.log("här är jag")
         const db = await DB.createNewApplication(app.body.application , app.user.username)
         return db
     }catch(e){
