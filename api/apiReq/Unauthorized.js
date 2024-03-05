@@ -12,7 +12,7 @@ router.post('/login', async (req, res) => {
     if(!data){
       res.json({state: false});
     }else{
-      res.cookie('jwt', data.token, { httpOnly: true, domain: 'localhost' });
+      res.cookie('jwt', data.token, { httpOnly: true, domain: 'iv1201-vt24-frontend.vercel.app' });
       res.json({state : true, role_id: data.user.role});
     }
   } catch (error) {
