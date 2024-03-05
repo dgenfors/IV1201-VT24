@@ -15,14 +15,14 @@ const userValidate = require('./api/Validate')
 app.use(express.json());
 app.use(cookieParser());
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000'); // Change '*' to your frontend URL in production
+  res.setHeader('Access-Control-Allow-Origin', 'https://iv1201-vt24-frontend.vercel.app'); // Change '*' to your frontend URL in production
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, application/json, Authorization');
   res.setHeader('Access-Control-Allow-Credentials', 'true'); // Allow credentials (cookies)
   next();
 });
 app.options('*', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000'); // Change '*' to your frontend URL in production
+  res.setHeader('Access-Control-Allow-Origin', 'https://iv1201-vt24-frontend.vercel.app'); // Change '*' to your frontend URL in production
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   res.setHeader('Access-Control-Allow-Credentials', 'true'); // Allow credentials (cookies)
