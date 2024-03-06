@@ -33,6 +33,8 @@ async function createAccount(user) {
  */
 async function login(req) {
     const { username, password } = req.body;
+    console.log("body:" +JSON.stringify(req.body))
+    console.log("password:"+password)
     try {
         const user = await DB.login(username, password);
         if (user.exists) {
