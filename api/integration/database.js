@@ -46,7 +46,6 @@ async function listAllApplications() {
  * @throws {Error} Throws an error if there is an issue executing the query.
  */
 async function login(username, password) {
-  console.log("password i login :"+password)
   const client = await pool.connect();
   try {
     await client.query(beginTransaction)
