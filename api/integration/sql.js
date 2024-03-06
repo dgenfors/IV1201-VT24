@@ -5,7 +5,7 @@ const createNewAccount = function(userDTO){return 'INSERT INTO public.person(nam
 const createCompetence = function (comp, username){return 'INSERT INTO public.competence(name) VALUES (\''+ comp +'\') ON CONFLICT (name) DO NOTHING;'}
 const createComp_profile = function(competence, username){return 'INSERT INTO competence_profile (person_id, competence_id, years_of_experience) VALUES ((SELECT person_id FROM person WHERE username = \'' + username + '\'), (SELECT competence_id FROM competence WHERE name = \'' + competence.exp + '\'), '+ competence.year + ');'}
 const createAvailability = function(availability, username){return 'INSERT INTO availability (person_id, from_date, to_date) VALUES ((SELECT person_id FROM person WHERE username = \'' + username + '\'), \'' + availability.startDate + '\', \'' + availability.endDate + '\');'}
-const setApplicationUnhandled = function(username){return 'UPDATE person SET application_status=\'"unhandled"\' WHERE person_id = (SELECT person_id FROM person WHERE username = \'' + username + '\');'}
+const setApplicationUnhandled = function(username){return 'UPDATE person SET application_status=\'unhandled\' WHERE person_id = (SELECT person_id FROM person WHERE username = \'' + username + '\');'}
 const listAllApplications= function(){
     return 'SELECT surname, name, application_status FROM person WHERE role_id =2 ORDER BY surname'
 }
