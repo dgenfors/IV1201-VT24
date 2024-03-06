@@ -31,6 +31,7 @@ async function listAllApplications() {
   } catch (e) {
     logs.appendErrorLineToFile(e);
     await client.query(rollbackTransaction)
+    client.release();
     throw e;
   }
 }
@@ -63,6 +64,7 @@ async function login(username, password) {
   } catch (e) {
     logs.appendErrorLineToFile(e);
     await client.query(rollbackTransaction)
+    client.release();
     throw e;
   }
 }
@@ -88,6 +90,7 @@ async function checkIfNotUserExists(user) {
     console.log("Couldn't check if user doesn't exists")
     logs.appendErrorLineToFile(e);
     await client.query(rollbackTransaction)
+    client.release();
     throw e;
   }
 }
@@ -112,6 +115,7 @@ async function createAccount(userDTO) {
     console.error(e);
     console.log("Couldn't create new account")
     await client.query(rollbackTransaction)
+    client.release();
     throw e;
   }
 }
@@ -125,8 +129,7 @@ async function createAccount(userDTO) {
  * @throws {Error} - If an error occurs during the application creation process.
  */
 async function createNewApplication(application, username) {
-  console.log("tog mig hit iaf: " +JSON.stringify(application))
-    const client = await pool.connect();
+  const client = await pool.connect();
   try {
     await client.query(beginTransaction)
     for (let i = 0; i < application.competence.length; i++) 
@@ -135,6 +138,7 @@ async function createNewApplication(application, username) {
       await client.query(sql.createComp_profile(application.competence[i], username));
     for (let i = 0; i < application.availability.length; i++) 
       await client.query(sql.createAvailability(application.availability[i], username));
+    await client.query(sql.setApplicationUnhandled(username))
     await client.query(endTranscation)
     client.release();
     logs.appendEventLineToFile("Created new application for user: " + username);
@@ -144,6 +148,7 @@ async function createNewApplication(application, username) {
     logs.appendErrorLineToFile(e);
     console.log("Couldn't create a new application!\n\n" + e)
     await client.query(rollbackTransaction)
+    client.release();
     throw e;
   }
 }
