@@ -32,11 +32,9 @@ async function createAccount(user) {
  * @returns {Promise<Object>} A Promise that resolves with an object containing a JWT token and user information if authentication is successful; otherwise, resolves with the result of the authentication attempt.
  */
 async function login(req) {
-    const { username, password } = req.body;
-    console.log("body:" +JSON.stringify(req.body))
-    console.log("password:"+password)
+    const { username, hashedPassword } = req.body;
     try {
-        const user = await DB.login(username, password);
+        const user = await DB.login(username, hashedPassword);
         if (user.exists) {
             const token = jwt.sign({ username, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
             return { token, user };
