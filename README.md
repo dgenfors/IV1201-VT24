@@ -3,7 +3,7 @@ This is the server part of an application following the MVVM pattern,
 you can find the front end part @https://github.com/dgenfors/iv1201-vt24-frontend
 
 Index is the entry point of the server from there the requests are routed to the folder apireq
-where the different requets are handled. Unauthorized.js file is the only file in the folder that will not 
+where the different requets are handled. `Unauthorized.js` file is the only file in the folder that will not 
 go through authentication via the file `authJWT.js`
 
 In the folder model there is two files, one handles the accounts of users(`account.js`) the other file(`application.js`) 
