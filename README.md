@@ -15,11 +15,17 @@ The `sql.js` file contains all essential queries necessary for the application's
 
 # Frameworks used
 express,
+
 sequelize,
+
 cookie-parser,
+
 Dotenv,
+
 jsonwebtoken,
+
 pg.
+
 # Getting Started
 Clone this repository.
 
