@@ -17,7 +17,7 @@ const pool = new Pool({
  * Retrieves a list of all applications from the database.
  * @async
  * @function listAllApplications
- * @returns {Promise<Array<Object>>} A Promise that resolves with an array of application objects.
+ * @returns {Promise<Array<Applications>>} A Promise that resolves with an array of application objects.
  * @throws {Error} Throws an error if there is an issue executing the query.
  */
 async function listAllApplications() {
@@ -98,8 +98,8 @@ async function checkIfNotUserExists(user) {
  * Asynchronously creates a new account.
  * 
  * @param {userDTO} userDTO - The user data transfer object containing information for creating the account.
- * @returns {Promise<boolean>} - A Promise that resolves to true if the account is created successfully.
- * @throws {Error} - If an error occurs during the account creation process.
+ * @returns {Promise<boolean>} A Promise that resolves to true if the account is created successfully.
+ * @throws {Error} If an error occurs during the account creation process.
  */
 async function createAccount(userDTO) {
   const client = await pool.connect();
@@ -125,8 +125,8 @@ async function createAccount(userDTO) {
  * 
  * @param {applicationDTO} application - The application object containing information for the new application.
  * @param {string} username - The username of the user for whom the application is being created.
- * @returns {Promise<boolean>} - A Promise that resolves to true if the application is created successfully.
- * @throws {Error} - If an error occurs during the application creation process.
+ * @returns {Promise<boolean>} A Promise that resolves to true if the application is created successfully.
+ * @throws {Error} If an error occurs during the application creation process.
  */
 async function createNewApplication(application, username) {
   const client = await pool.connect();

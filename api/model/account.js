@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
  * @function createAccount
  * @param {UserDTO} user - A UserDTO containing all needed information that will be saved about the user.
  * @returns {Promise<Object>} Returns a object with a succes field which marks the success or failure of creation and field for email, pnr, username that will show if they are used already in database.
+ * @throws {Error} Throws error if something went wrong when creating the account.
  */
 async function createAccount(user) {
     try{

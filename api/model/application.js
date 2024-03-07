@@ -26,25 +26,31 @@ async function submitApplication(app) {
     }
 }
 
-// /**
-//  * Fetches application data.
-//  * @function fetchApplicationData
-//  * @param {String} user - Username of the user linked to the specific application.
-//  * @returns {ApplicationDTO} DTO containing all the information that is in the application.
-//  */
-// function fetchApplicationData(user) {
-// }
+/**
+ * Fetches application data.
+ * @function fetchApplicationData
+ * @param {String} user - Username of the user linked to the specific application.
+ * @returns {ApplicationDTO} DTO containing all the information that is in the application.
+ * @todo Implement this function.
+ * @deprecated This function is not implemented, do not use
+ */
+function fetchApplicationData(user) {
 
-// /**
-//  * Processes an application.
-//  * @function processApplication
-//  * @param {String} user - Username of the user linked to the specific application.
-//  * @param {String} status - The new status of the application
-//  * @returns {Boolean} Boolean confirming the sucess.
-//  */
-// function processApplication(user, status) {
-    
-// }
+}
+
+/**
+ * Processes an application.
+ * @function processApplication
+ * @param {String} user - Username of the user linked to the specific application.
+ * @param {String} status - The new status of the application
+ * @returns {Boolean} Boolean confirming the success.
+ * @todo Implement this function.
+ * @deprecated This function is not implemented, do not use
+ */
+function processApplication(user, status) {
+
+}
+
 
 module.exports = {
     listAllApplications,

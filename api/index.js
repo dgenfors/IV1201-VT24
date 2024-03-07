@@ -2,15 +2,16 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const app = express();
 require('dotenv').config();
-const port = 3001; // process.env.SERVER_PORT; //Add this
-const logsHandler = require('./integration/logsHandler')
+const port = 3001;
+const logsHandler = require('./integration/logsHandler');
 const unauthorizedRoute = require('./apiReq/Unauthorized');
-const recruiterRoute = require('./apiReq/RecruiterApi')
-const userRoute = require('./apiReq/UserApi')
-const userValidate = require('./apiReq/Validate')
+const recruiterRoute = require('./apiReq/RecruiterApi');
+const userRoute = require('./apiReq/UserApi');
+const userValidate = require('./apiReq/Validate');
 
 /**
- * Enable CORS and set up middleware for parsing JSON and cookies.
+ * Middleware to enable CORS and set up parsing of JSON and cookies.
+ * @middleware
  */
 app.use(express.json());
 app.use(cookieParser());
@@ -22,6 +23,11 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Authorization');
   next();
 });
+
+/**
+ * OPTIONS method handler to handle preflight requests.
+ * @route OPTIONS *
+ */
 app.options('*', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', 'https://iv1201-vt24-frontend.vercel.app'); // Change '*' to your frontend URL in production
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -30,10 +36,23 @@ app.options('*', (req, res) => {
   res.setHeader('Access-Control-Expose-Headers', 'Authorization');
   res.sendStatus(200);
 });
-app.use(logsHandler.appendReqLineToFile)
 
+/**
+ * Middleware to handle logging of HTTP requests.
+ * @middleware
+ */
+app.use(logsHandler.appendReqLineToFile);
+
+/**
+ * Route to serve the root endpoint.
+ * @route GET /
+ * @returns {String} Message indicating that Express is running on Vercel.
+ */
 app.get("/", (req, res) => res.send("Express on Vercel"));
 
+/**
+ * Route handlers for various API endpoints.
+ */
 app.use('/unauthorized', unauthorizedRoute);
 app.use('/recruiter', recruiterRoute);
 app.use('/user', userRoute);
