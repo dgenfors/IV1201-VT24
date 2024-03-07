@@ -6,9 +6,12 @@ const router = express.Router();
  */
 router.use(authenticateJWT)
 
+/**
+ * Route to log in.
+ */
 router.post('/checkIfLogIn', async (req,res) => {
     try {
-      role = req.user.role; // Attach user information to the request object
+      role = req.user.role;
       res.json(role)
     } catch (error) {
       console.error(error);
