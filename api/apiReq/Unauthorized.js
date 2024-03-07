@@ -7,6 +7,7 @@ const router = express.Router();
  * Route for logging in.
  */
 router.post('/login', async (req, res) => {
+  console.log("vi kommer till login")
   try {
     const data = await Account.login(req);
     if(!data){

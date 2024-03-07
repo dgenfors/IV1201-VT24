@@ -34,6 +34,7 @@ async function createAccount(user) {
  */
 async function login(req) {
     const { username, hashedPassword } = req.body;
+    console.log(hashedPassword)
     try {
         const user = await DB.login(username, hashedPassword);
         if (user.exists) {
